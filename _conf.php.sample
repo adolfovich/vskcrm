@@ -1,0 +1,11 @@
+<?php
+
+$debug_mode = TRUE;
+
+// Database settings
+$db_host = '127.0.0.1';
+$db_user = '';
+$db_pass = '';
+$db_name = '';
+
+$pass_key = '';
