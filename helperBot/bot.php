@@ -72,13 +72,25 @@ function queryExternalApi($searchString) {
 }
 
 function cleanTextForTelegram($text) {
-    // Список разрешенных тегов в Telegram (HTML)
-    $allowedTags = '<b><strong><i><em><u><ins><s><strike><del><a><code><pre><blockquote>';
 
-    // 1. Убираем все теги, кроме разрешенных
-    $text = strip_tags($text, $allowedTags);
+    //меняем "</p><p>" на "\n\n"
+    $text = str_replace('</p><p>', "\n\n", $text);
 
-    // 2. Дополнительно: Очистка нежелательных атрибутов (например, onclick)
+    //меняем "<br>" на "\n\n"
+    $text = str_replace('<br>', "\n\n", $text);
+
+    //меняем "</br>" на "\n\n"
+    $text = str_replace('</br>', "\n\n", $text);
+
+    //меняем "<p>" на ""
+    $text = str_replace('<p>', "", $text);
+
+    //меняем "<font color="#ffffff">text</font>" на "text"
+    $text = preg_replace('/<font\b[^>]*>([\s\S]*?)<\/font>/i', '$1', $text);
+
+    //меняем <span style="background-color: rgb(0, 0, 0);">text</span>  на "text"
+    $text = preg_replace('/<span[^>]*>(.*?)<\/span>/i', '$1', $text);
+
     // Оставляем только href для ссылок
     $text = preg_replace('/<(a\s+[^>]*href="[^"]*")[^>]*>/i', '<$1>', $text);
 
@@ -87,11 +99,6 @@ function cleanTextForTelegram($text) {
 
     return trim($text);
 }
-
-// Пример использования:
-//$rawHtml = '<p>Привет! <b>Жирный</b>, <script>alert("xss")</script> <i>Курсив</i>. <a href="https://example.com" onclick="alert(1)">Ссылка</a></p>';
-//echo cleanTextForTelegram($rawHtml);
-// Вывод: Привет! <b>Жирный</b>,  <i>Курсив</i>. <a href="https://example.com">Ссылка</a>
 
 
 // Форматируем ответ для пользователя
