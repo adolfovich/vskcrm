@@ -1,5 +1,5 @@
 <?php
-include ('_conf.php');
+include __DIR__ . '/_conf.php';
 
 // Получаем обновления от Telegram
 function getUpdates($offset = 0) {
