@@ -72,30 +72,39 @@ function queryExternalApi($searchString) {
 }
 
 function cleanTextForTelegram($text) {
+    echo 'cleanTextForTelegram';
 
     //меняем "</p><p>" на "\n\n"
     $text = str_replace('</p><p>', "\n\n", $text);
+    echo $text;
 
     //меняем "<br>" на "\n\n"
     $text = str_replace('<br>', "\n\n", $text);
+    echo $text;
 
     //меняем "</br>" на "\n\n"
     $text = str_replace('</br>', "\n\n", $text);
+    echo $text;
 
     //меняем "<p>" на ""
     $text = str_replace('<p>', "", $text);
+    echo $text;
 
     //меняем "<font color="#ffffff">text</font>" на "text"
     $text = preg_replace('/<font\b[^>]*>([\s\S]*?)<\/font>/i', '$1', $text);
+    echo $text;
 
     //меняем <span style="background-color: rgb(0, 0, 0);">text</span>  на "text"
     $text = preg_replace('/<span[^>]*>(.*?)<\/span>/i', '$1', $text);
+    echo $text;
 
     // Оставляем только href для ссылок
     $text = preg_replace('/<(a\s+[^>]*href="[^"]*")[^>]*>/i', '<$1>', $text);
+    echo $text;
 
     // Убираем пустые теги
     $text = preg_replace('/<([a-z]+)><\/\1>/i', '', $text);
+    echo $text;
 
     return trim($text);
 }
