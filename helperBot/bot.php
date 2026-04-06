@@ -72,7 +72,7 @@ function queryExternalApi($searchString) {
 }
 
 function cleanTextForTelegram($text) {
-    echo 'cleanTextForTelegram';
+    /*echo 'cleanTextForTelegram';
 
     //меняем "</p><p>" на "\n\n"
     $text = str_replace('</p><p>', "\n\n", $text);
@@ -104,7 +104,20 @@ function cleanTextForTelegram($text) {
 
     // Убираем пустые теги
     $text = preg_replace('/<([a-z]+)><\/\1>/i', '', $text);
-    echo $text;
+    echo $text;*/
+
+    // Список разрешенных тегов в Telegram (HTML)
+    $allowedTags = '<b><strong><i><em><u><ins><s><strike><del><a><code><pre><blockquote>';
+
+    // 1. Убираем все теги, кроме разрешенных
+    $text = strip_tags($text, $allowedTags);
+
+    // 2. Дополнительно: Очистка нежелательных атрибутов (например, onclick)
+    // Оставляем только href для ссылок
+    $text = preg_replace('/<(a\s+[^>]*href="[^"]*")[^>]*>/i', '<$1>', $text);
+
+    // Убираем пустые теги
+    $text = preg_replace('/<([a-z]+)><\/\1>/i', '', $text);
 
     return trim($text);
 }
