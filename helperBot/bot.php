@@ -4,8 +4,6 @@ define('BOT_TOKEN', '8607364179:AAGcw64Yr9JM7kIC86NzgzS8oMLomEepac8'); // Зам
 define('API_URL', 'https://api.telegram.org/bot' . BOT_TOKEN . '/');
 define('EXTERNAL_API_URL', 'http://vsk.exeptional.ru/api/helper/');
 
-
-
 // Получаем обновления от Telegram
 function getUpdates($offset = 0) {
     $url = API_URL . 'getUpdates?offset=' . $offset . '&timeout=30';
@@ -73,6 +71,29 @@ function queryExternalApi($searchString) {
     return json_decode($response, true);
 }
 
+function cleanTextForTelegram($text) {
+    // Список разрешенных тегов в Telegram (HTML)
+    $allowedTags = '<b><strong><i><em><u><ins><s><strike><del><a><code><pre><blockquote>';
+
+    // 1. Убираем все теги, кроме разрешенных
+    $text = strip_tags($text, $allowedTags);
+
+    // 2. Дополнительно: Очистка нежелательных атрибутов (например, onclick)
+    // Оставляем только href для ссылок
+    $text = preg_replace('/<(a\s+[^>]*href="[^"]*")[^>]*>/i', '<$1>', $text);
+
+    // Убираем пустые теги
+    $text = preg_replace('/<([a-z]+)><\/\1>/i', '', $text);
+
+    return trim($text);
+}
+
+// Пример использования:
+//$rawHtml = '<p>Привет! <b>Жирный</b>, <script>alert("xss")</script> <i>Курсив</i>. <a href="https://example.com" onclick="alert(1)">Ссылка</a></p>';
+//echo cleanTextForTelegram($rawHtml);
+// Вывод: Привет! <b>Жирный</b>,  <i>Курсив</i>. <a href="https://example.com">Ссылка</a>
+
+
 // Форматируем ответ для пользователя
 function formatResponse($data) {
     if ($data['status'] === 'error') {
@@ -83,7 +104,7 @@ function formatResponse($data) {
         if (count($data['content']) == 1) {
             $record = $data['content'][0];
             $result = "📝 <b>" . htmlspecialchars($record['subject']) . "</b>\n\n";
-            $result .= htmlspecialchars($record['text']);
+            $result .= cleanTextForTelegram(htmlspecialchars($record['text']));
 
             // Добавляем дополнительную информацию, если нужно
             if (!empty($record['keywords'])) {
@@ -94,24 +115,27 @@ function formatResponse($data) {
             $result = '';
             foreach ($data['content'] as $record) {
 
+                $textLen = 300;
+
                 $result .= "📝 <b>" . htmlspecialchars($record['subject']) . "</b>\n\n";
 
-                $xt=iconv_strlen($record['text'], 'UTF-8');
-                $tx=iconv_substr($record['text'], 0, 100, 'UTF-8');
+                $text = cleanTextForTelegram(htmlspecialchars($record['text']));
+                $xt=iconv_strlen($text, 'UTF-8');
+                $tx=iconv_substr($text, 0, $textLen, 'UTF-8');
                 $tx=nl2br($tx);
-                if($xt>150){$txx="......";} else {$txx="";}
-                $result .= htmlspecialchars($tx.$txx);
+                if($xt>$textLen){$txx="......";} else {$txx="";}
+                $result .= $tx.$txx;
 
                 // Добавляем дополнительную информацию, если нужно
                 if (!empty($record['keywords'])) {
                     $result .= "\n\n🔑 <i>Ключевые слова: " . htmlspecialchars($record['keywords']) . "</i>";
                 }
 
-                $result .= '\n\n';
+                $result .= "\n\n";
 
                 $result .= '<a href="http://vsk.exeptional.ru/helper/?id='.$record['id'].'">Полный текст</a>';
 
-                $result .= '\n\n';
+                $result .= "\n\n";
             }
 
         }
