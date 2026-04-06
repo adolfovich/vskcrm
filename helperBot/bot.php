@@ -120,7 +120,7 @@ function formatResponse($data) {
         if (count($data['content']) == 1) {
             $record = $data['content'][0];
             $result = "📝 <b>" . htmlspecialchars($record['subject']) . "</b>\n\n";
-            $result .= cleanTextForTelegram(htmlspecialchars($record['text']));
+            $result .= htmlspecialchars(cleanTextForTelegram($record['text']));
 
             // Добавляем дополнительную информацию, если нужно
             if (!empty($record['keywords'])) {
@@ -135,7 +135,7 @@ function formatResponse($data) {
 
                 $result .= "📝 <b>" . htmlspecialchars($record['subject']) . "</b>\n\n";
 
-                $text = cleanTextForTelegram(htmlspecialchars($record['text']));
+                $text = htmlspecialchars(cleanTextForTelegram($record['text']));
                 $xt=iconv_strlen($text, 'UTF-8');
                 $tx=iconv_substr($text, 0, $textLen, 'UTF-8');
                 $tx=nl2br($tx);
