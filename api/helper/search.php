@@ -23,7 +23,7 @@ if ($searchString != "") {
         $content['status'] = 'ok';
         foreach ($records as $record) {
 
-            $content[] = $record;
+            $content['content'][] = $record;
         }
     } else {
         $content['status'] = 'error';
