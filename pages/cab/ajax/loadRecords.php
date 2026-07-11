@@ -2,6 +2,8 @@
 
 require_once('connect.php');
 
+
+
 $records = $db->getAll("
     SELECT * 
     FROM knowledgebase 

@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+
+
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -14,6 +16,8 @@ $db = new SafeMySQL(array('host' => $db_host,'user' => $db_user, 'pass' => $db_p
 
 require_once('../../../classes/core.class.php');
 
+
+
 $core  = new Core();
 
 $url = $core->url;
@@ -25,8 +29,10 @@ if (isset($_SESSION['id'])) {
   $user_id = $_SESSION['id'];
   $user_data = $db->getRow("SELECT * FROM `users` WHERE `id` = ?i", $user_id);
 } else {
-  die();
+    $user_id = 0;
 }
+
+
 
 $db_settings = $db->getAll("SELECT * FROM settings");
 $settings=[];
@@ -36,3 +42,4 @@ foreach ($db_settings as $setting){
 		"data" => $setting['data'],
 	];
 }
+

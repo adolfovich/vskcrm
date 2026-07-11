@@ -30,6 +30,10 @@ header("Cache-Control: no cache");
 
 if ($url[0] == 'cab') {
   include ('pages/cab/template.php');
+} else if ($url[0] == 'knowledgebase') {
+    include ('pages/knowledgebase.php');
+} else if ($url[0] == 'checklists') {
+    include ('pages/checklists.php');
 } else if ($url[0] == 'api') {
     include ('api/controller.php');
 } else {

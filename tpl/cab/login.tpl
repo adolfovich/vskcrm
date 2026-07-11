@@ -95,6 +95,7 @@
       <label for="inputPassword" class="sr-only">Пароль</label>
       <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Пароль" required>
       <button class="btn btn-lg btn-success btn-block" type="submit">Вход</button>
+        <a href="/knowledgebase" class="btn btn-lg btn-success btn-block">База знаний</a>
       <p class="mt-5 mb-3 text-muted"><a href="https://exeptional.ru" class="font-weight-bold ml-1" target="_blank" style="color: #6c757d; font-weight: 100 !important;">e<span style="color: green;">[x]</span>eptional software</a> &copy; <?=date("Y")?></p>
     </form>
 
