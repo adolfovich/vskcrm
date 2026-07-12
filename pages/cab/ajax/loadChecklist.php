@@ -13,7 +13,7 @@ $html = '';
 if ($operations1) {
 
     $html .= '<div class="card" >';
-    $html .= '<div class="card-body">';
+    $html .= '<div class="card-body row-striped">';
     $html .= '<h3>Регламент 1</h3>';
 
     foreach ($operations1 as $operation) {
@@ -30,7 +30,7 @@ if ($operations1) {
 
     if ($operations2) {
         $html .= '<div class="card" >';
-        $html .= '<div class="card-body">';
+        $html .= '<div class="card-body row-striped">';
         $html .= '<h3>Регламент 2</h3>';
 
         foreach ($operations2 as $operation) {

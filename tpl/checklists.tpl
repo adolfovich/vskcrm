@@ -51,6 +51,12 @@
         }
     </script>
 
+    <style>
+        .row-striped > div:nth-of-type(odd) {
+            background-color: #dddfe1; /* Используется цвет фона из Bootstrap 4 (.bg-light) */
+        }
+    </style>
+
     <div class="container-fluid mt--7">
         <div class="row">
             <div class="col-xl-12 mb-5 mb-xl-0">
