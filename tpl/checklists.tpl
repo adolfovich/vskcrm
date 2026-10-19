@@ -70,6 +70,7 @@
             <div class="col-xl-12 mb-5 mb-xl-0">
                 <div class="card shadow">
                     <div class="card-header bg-transparent" style="padding-bottom: 0;">
+
                         <div class="form-group">
                             <select class="custom-select" name="checklistSelect" onchange="loadChecklist(this.value)">
                                 <option selected="" disabled="">Выберите чеклист </option>
